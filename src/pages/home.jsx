@@ -3,7 +3,7 @@ import Navbar from '../components/navbar';
 import { Context } from '../context';
 
 function Home() {
-  const { getGames, games } = useContext(Context);
+  const { getGames, games } = useContext(Context)
 
   useEffect(() => {
     getGames();
