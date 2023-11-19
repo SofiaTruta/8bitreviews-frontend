@@ -1,5 +1,6 @@
 import React, { createContext, useState } from 'react'
 import axios from 'axios';
+import { useCookies } from 'react-cookie'
 
 const Context = createContext()
 
@@ -8,6 +9,7 @@ const ContextProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [user, setUser] = useState(null)
     const [csrfToken, setCsrfToken] = useState(null)
+    const [cookies, setCookie, removeCookie] = useCookies(['accessToken'])
 
     const [games, setGames] = useState(null);
 
@@ -17,23 +19,14 @@ const ContextProvider = ({ children }) => {
     const AUTH_USER = process.env.REACT_APP_AUTH_USER
     const AUTH_PASS = process.env.REACT_APP_AUTH_PASS
 
-    // functions
-    const toggleLogin = () => {
-        setIsLoggedIn((prevLoggedIn) => !prevLoggedIn)
-
-        if (!isLoggedIn && user) {
-            loginUser(user.username, user.password)
-        }
-    }
-
+    // functions login, logout
     async function getCSRFToken() {
         try {
-            const response = await axios.get(`${BACKEND_API}/get-csrf-token/`,{
+            const response = await axios.get(`${BACKEND_API}/get-csrf-token/`, {
                 headers: {
                     'Authorization': 'Basic ' + btoa(`${AUTH_USER}:${AUTH_PASS}`),
                 }
             })
-            console.log('csrf token',response.data.csrf_token)
             setCsrfToken(response.csrf_token)
 
         } catch (error) {
@@ -55,17 +48,31 @@ const ContextProvider = ({ children }) => {
                     'X-CSRFToken': csrfToken
                 }
             })
-            console.log('login response', response)
-            const { accessToken, refreshToken } = response.data
-            //SET COOKIES HERE EVENTUALLY
             
+            const accessToken = response.data.access
+            const userId = response.data.user_id
 
+            setUser(response.data.user_id) //unsure if I need this?
+
+            const expiration = new Date(new Date().getTime() + 60 * 60 * 1000) // 1 hour
+            setCookie('accessToken', accessToken, { path: '/', expires: expiration })
+            setCookie('user_id', userId, { path: '/', expires: expiration })
             setIsLoggedIn(true)
+
         } catch (error) {
             console.log('error logging in', error)
         }
     }
 
+    async function logout() {
+        if (cookies.accessToken) {
+            removeCookie('accessToken', { path: '/' })
+            removeCookie('user_id', { path: '/' })
+            setIsLoggedIn(false)
+        }
+    }
+
+    // fetch data and populate
     async function getGames() {
         try {
             const response = await axios.get(`${BACKEND_API}/games`, {
@@ -81,17 +88,24 @@ const ContextProvider = ({ children }) => {
         }
     }
 
+    async function getUserDetails(){
+        // try {
+        //     const response = await axios.get(${BACKEND_API})
+        // } catch (error) {
+            
+        // }
+    }
 
     return (
         <Context.Provider
             value={{
                 isLoggedIn,
-                toggleLogin,
                 games,
                 getGames,
                 user,
                 setUser,
-                loginUser
+                loginUser,
+                logout
             }}>
             {children}
         </Context.Provider>
