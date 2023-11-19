@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom'
 import { Context } from '../context'
 import { useNavigate } from 'react-router-dom'
 
+
 const Navbar = () => {
-    const { isLoggedIn, logout, user } = useContext(Context)
+    const { isLoggedIn, logout, username } = useContext(Context)
 
     const navigate = useNavigate()
 
@@ -20,13 +21,12 @@ const Navbar = () => {
             </div>
 
             <div>
-                {isLoggedIn ?
+                {isLoggedIn && username ?
                     (
                         <div>
-                            <p>Hi {user}</p>
-                            <button>Register a Game</button>
-                            <button>My Games</button>
-                            <button>My Reviews</button>
+                            <p>Hi {username}</p>
+                            <Link to='/register-game'><button>Register a Game</button></Link>
+                            <Link to='/profile'><button>My Profile</button></Link>
                             <button onClick={handleLogout}>Logout</button>
                         </div>)
                     :

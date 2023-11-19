@@ -7,7 +7,9 @@ const Context = createContext()
 const ContextProvider = ({ children }) => {
     // state
     const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [user, setUser] = useState(null)
+    const [userId, setUserId] = useState(null)
+    const [username, setUsername] = useState(null)
+
     const [csrfToken, setCsrfToken] = useState(null)
     const [cookies, setCookie, removeCookie] = useCookies(['accessToken'])
 
@@ -52,7 +54,8 @@ const ContextProvider = ({ children }) => {
             const accessToken = response.data.access
             const userId = response.data.user_id
 
-            setUser(response.data.user_id) //unsure if I need this?
+            setUserId(response.data.user_id)
+            setUsername(response.data.username)
 
             const expiration = new Date(new Date().getTime() + 60 * 60 * 1000) // 1 hour
             setCookie('accessToken', accessToken, { path: '/', expires: expiration })
@@ -88,24 +91,40 @@ const ContextProvider = ({ children }) => {
         }
     }
 
-    async function getUserDetails(){
-        // try {
-        //     const response = await axios.get(${BACKEND_API})
-        // } catch (error) {
-            
-        // }
-    }
+    async function checkIfLoggedIn() {
+        try {
+          if (cookies.user_id) {
+            setUserId(cookies.user_id)
+            setIsLoggedIn(true)
+            const response = await axios.get(`${BACKEND_API}/users/${userId}`, {
+              headers: {
+                'Authorization': 'Basic ' + btoa(`${AUTH_USER}:${AUTH_PASS}`),
+                'Content-Type': 'application/x-www-form-urlencoded'
+              }
+            })
+            setUsername(response.data.username)
+          }
+    
+        } catch (error) {
+          console.log('error getting user details', error)
+        }
+      }
+    
 
     return (
         <Context.Provider
             value={{
                 isLoggedIn,
+                setIsLoggedIn,
                 games,
                 getGames,
-                user,
-                setUser,
+                userId,
+                setUserId,
                 loginUser,
-                logout
+                logout,
+                username,
+                setUsername,
+                checkIfLoggedIn
             }}>
             {children}
         </Context.Provider>
