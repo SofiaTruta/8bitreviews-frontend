@@ -22,6 +22,7 @@ const SingleGame = () => {
             user: ''
         }
     ])
+    const [updatedReviewsForGame, setUpdatedReviewsForGame] = useState(null)
 
     const getSingleGame = async () => {
         try {
@@ -31,12 +32,38 @@ const SingleGame = () => {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
             })
-            // console.log(response.data)
+
             setSingleGame(response.data.game)
             setReviewsForGame(response.data.reviews)
 
         } catch (error) {
             console.log('error getting single game', error)
+        }
+    }
+
+    const findReviewUser = async () => {
+        try {
+            const updatedReviews = await Promise.all(
+                reviewsForGame.map(async (review) => {
+                    console.log(review.user)
+                    console.log(`${BACKEND_API}/rev-user/${review.user}`)
+                    const response = await axios.get(`${BACKEND_API}/rev-user/${review.user}`, {
+                        headers: {
+                            'Authorization': 'Basic ' + btoa(`${AUTH_USER}:${AUTH_PASS}`),
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                    });
+                   
+                    //now for each response, take the response.data.username and set as the user of updatedReviewsForGame, and then copy all other keys apart from user from reviewsForGame
+                    const updatedReview = { ...review }
+                    updatedReview.user = response.data.username; 
+
+                    return updatedReview;
+                })
+            );
+            setUpdatedReviewsForGame(updatedReviews)
+        } catch (error) {
+            console.log('Error fetching user details for reviews:', error);
         }
     }
 
@@ -78,7 +105,7 @@ const SingleGame = () => {
                     'Content-Type': 'application/json'
                 }
             });
-    
+
             console.log('Review submitted:', response.data);
             // clear the slate of the reviews so I can add another one immediately after if I want to
             setNewReview({
@@ -93,13 +120,22 @@ const SingleGame = () => {
         }
     }
 
+    // get the game
     useEffect(() => {
         getSingleGame()
-        if (newReview.review !== ''){
+        if (newReview.review !== '') {
             postNewReview()
         }
     }, [id, newReview])
 
+    // get details about the reviews for the game
+    useEffect(() => {
+        if (reviewsForGame.length > 0 && reviewsForGame.every(review => review.user !== '')) {
+            findReviewUser()
+        }
+    }, [reviewsForGame])
+
+    //handle a new review submission
     useEffect(() => {
         if (userId) {
             setNewReview({
@@ -112,6 +148,7 @@ const SingleGame = () => {
         }
     }, [userId])
 
+    console.log('updated reviews for game', updatedReviewsForGame)
     return (
         <>
             <Navbar />
@@ -157,10 +194,11 @@ const SingleGame = () => {
 
 
                 {/* reviews for game */}
+                {updatedReviewsForGame && (
                 <Container className="dark-mode mt-4">
                     <Row>
                         <p>Reviews for this game (style me)</p>
-                        {reviewsForGame.map((review, index) => (
+                        {updatedReviewsForGame.map((review, index) => (
                             <Col key={index}>
                                 <Card className="dark-mode mb-3">
                                     <Card.Body>
@@ -174,6 +212,7 @@ const SingleGame = () => {
                         ))}
                     </Row>
                 </Container>
+            ) }
             </>
         </>
 
