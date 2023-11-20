@@ -10,7 +10,7 @@ import Profile from './pages/profile.jsx';
 import RegisterGame from './pages/registerGame.jsx';
 import SignUpForm from './pages/signupForm.jsx';
 import SingleGame from './pages/singleGame.jsx';
-import SubmitReview from './pages/submitReview.jsx';
+// import SubmitReview from './pages/submitReview.jsx';
 import LoginForm from './pages/loginForm.jsx';
 
 
@@ -26,7 +26,7 @@ const App = () => {
           <Route path="/sign-up" element={<SignUpForm />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/games/:id" element={<SingleGame />} />
-          <Route path="/games/:id/submit-review" element={<SubmitReview />} />
+          {/* <Route path="/games/:id/submit-review" element={<SubmitReview />} /> */}
         </Routes>
       </BrowserRouter>
     </ContextProvider>

@@ -8,11 +8,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/dark-mode.css'
 
 const SignUpForm = () => {
-    // const { user, setUser } = useContext(Context);
+    const { BACKEND_API } = useContext(Context);
     const navigate = useNavigate()
-    const login = {
-        pathname: '/login'
-    }
+    // const login = {
+    //     pathname: '/login'
+    // }
 
     const [formData, setFormData] = useState({
         username: '',
@@ -38,9 +38,8 @@ const SignUpForm = () => {
         const { confirmPassword, ...postData } = formData
 
         try {
-            const signup = await axios.post('http://localhost:8000/new-user/', postData)
-            // setUser(signup.data.user_data)
-            navigate(login)
+            const signup = await axios.post(`${BACKEND_API}/new-user/`, postData)
+            navigate('/login')
 
         } catch (error) {
             console.log(error)

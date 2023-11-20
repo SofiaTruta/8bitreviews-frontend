@@ -83,3 +83,24 @@ button[type='submit']:hover {
     text-decoration: none;
     color: inherit;
 }
+
+/* modal */
+.modal.dark-mode {
+    background-color: rgba(34, 34, 34, 0.5);
+    color: #fff; 
+}
+
+.modal-header.dark-mode {
+    background-color: #333; 
+    color: #fff; 
+}
+
+.modal-body.dark-mode {
+    background-color: #222;
+    color: #fff; 
+}
+
+.modal-footer.dark-mode {
+    background-color: #333; 
+    color: #fff; 
+}

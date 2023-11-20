@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { Context } from '../context'
 import { useNavigate } from 'react-router-dom'
-
+import Navbar from '../components/navbar'
 import { Form, Button } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../styles/dark-mode.css'
@@ -31,6 +31,7 @@ const LoginForm = () => {
 
     return (
         <>
+            <Navbar />
             <div>Login Form</div>
             <Form className="custom-dark-mode">
                 <Form.Group controlId="formUsername">
