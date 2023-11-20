@@ -1,54 +1,67 @@
 /* Dark Mode Styles */
 body {
-    background-color: #121212;
-    color: #fff;
-  }
-  
-  .navbar {
-    background-color: #333;
-    /* Adjust navbar styles for dark mode */
-  }
-  
-  /* Form styles */
-  form {
-    background-color: #222;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  form label {
-    color: #fff;
-  }
-  
-  form input[type='text'],
-  form input[type='password'],
-  form input[type='email'] {
-    background-color: #333;
-    color: #fff;
-    border: 1px solid #444;
-    border-radius: 4px;
-    padding: 8px;
-    margin-bottom: 10px;
-  }
-  
-  form input[type='text']::placeholder,
-  form input[type='password']::placeholder,
-  form input[type='email']::placeholder {
-    color: #888;
-  }
-  
-  button[type='submit'] {
-    background-color: #007bff;
-    border-color: #007bff;
-    color: #fff;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  button[type='submit']:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-  }
-  
+  background-color: black;
+  color: #fff;
+}
+
+nav {
+  background-color: #333;
+  color: #ffcc00;
+}
+
+/* Form styles */
+form {
+  background-color: #222;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+  color: #fff;
+}
+
+form input[type='text'],
+form input[type='password'],
+form input[type='email'] {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+form input[type='text']::placeholder,
+form input[type='password']::placeholder,
+form input[type='email']::placeholder {
+  color: #888;
+}
+
+button[type='submit'] {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button[type='submit']:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+/* global styles for the cards */
+.card.dark-mode {
+  /* Your dark mode styles for the Card component */
+  background-color: #333;
+  color: #fff;
+  /* Add other dark mode styles as needed */
+}
+
+.card.dark-mode .card-title {
+  /* Example of styling a specific part of the Card component */
+  margin-bottom: 10px;
+  color: #ffcc00; /* Example color change */
+}

@@ -1,10 +1,85 @@
+/* Dark Mode Styles */
 body {
     background-color: black;
-    color: white;
-    font-family: 'Roboto', sans-serif;
+    color: #fff;
 }
 
 nav {
     display: flex;
     justify-content: space-between;
+    background-color: #333;
+    color: white;
+}
+
+/* Form styles */
+form {
+    background-color: #222;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+    color: #fff;
+}
+
+form input[type='text'],
+form input[type='password'],
+form input[type='email'] {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+form input[type='text']::placeholder,
+form input[type='password']::placeholder,
+form input[type='email']::placeholder {
+    color: #888;
+}
+
+form textarea.form-control {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 8px;
+    margin-bottom: 10px;
+    resize: vertical; 
+}
+
+form textarea.form-control::placeholder {
+    color: #888;
+}
+
+button[type='submit'] {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button[type='submit']:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* card styles */
+.card.dark-mode {
+    background-color: #333;
+    color: #fff;
+}
+
+.card.dark-mode .card-title {
+    margin-bottom: 10px;
+    color: #ffcc00;
+}
+
+.link-unstyled {
+    text-decoration: none;
+    color: inherit;
 }

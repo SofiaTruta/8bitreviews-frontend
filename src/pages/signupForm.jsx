@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/dark-mode.css'
 
 const SignUpForm = () => {
-    const { user, setUser, toggleLogin } = useContext(Context);
+    // const { user, setUser } = useContext(Context);
     const navigate = useNavigate()
     const login = {
         pathname: '/login'
@@ -39,7 +39,7 @@ const SignUpForm = () => {
 
         try {
             const signup = await axios.post('http://localhost:8000/new-user/', postData)
-            setUser(signup.data.user_data)
+            // setUser(signup.data.user_data)
             navigate(login)
 
         } catch (error) {
@@ -47,9 +47,9 @@ const SignUpForm = () => {
         }
     }
 
-    useEffect(() => {
-        // toggleLogin()
-    }, [user])
+    // useEffect(() => {
+    //     // toggleLogin()
+    // }, [user])
     return (
         <>
             <Navbar />
