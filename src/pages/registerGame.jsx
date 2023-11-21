@@ -59,6 +59,7 @@ const RegisterGame = () => {
                     }
                 })
             console.log('new game', response)
+            navigate('/')
 
         } catch (error) {
             console.log(error);

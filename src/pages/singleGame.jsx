@@ -3,12 +3,13 @@ import { Context } from '../context';
 import Navbar from "../components/navbar";
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Card, Container, Row, Col, Button, Modal, Form } from 'react-bootstrap';
+import { Card, Container, Row, Col, Button } from 'react-bootstrap';
 import ReviewModal from '../components/ReviewModal.jsx'
 import { getCurrentDate } from '../utils/utils.js';
+import EditReviewModal from '../components/EditReviewModal.jsx';
 
 const SingleGame = () => {
-    const { BACKEND_API, AUTH_PASS, AUTH_USER, isLoggedIn, userId } = useContext(Context)
+    const { BACKEND_API, AUTH_PASS, AUTH_USER, isLoggedIn, userId, userDetails } = useContext(Context)
 
     const { id } = useParams()
     const [singleGame, setSingleGame] = useState(null)
@@ -45,18 +46,16 @@ const SingleGame = () => {
         try {
             const updatedReviews = await Promise.all(
                 reviewsForGame.map(async (review) => {
-                    console.log(review.user)
-                    console.log(`${BACKEND_API}/rev-user/${review.user}`)
                     const response = await axios.get(`${BACKEND_API}/rev-user/${review.user}`, {
                         headers: {
                             'Authorization': 'Basic ' + btoa(`${AUTH_USER}:${AUTH_PASS}`),
                             'Content-Type': 'application/x-www-form-urlencoded'
                         }
                     });
-                   
+
                     //now for each response, take the response.data.username and set as the user of updatedReviewsForGame, and then copy all other keys apart from user from reviewsForGame
                     const updatedReview = { ...review }
-                    updatedReview.user = response.data.username; 
+                    updatedReview.user = response.data.username;
 
                     return updatedReview;
                 })
@@ -81,7 +80,6 @@ const SingleGame = () => {
         setShowReviewModal(!showReviewModal);
     };
 
-
     const handleReviewSubmission = (formData) => {
         const now = getCurrentDate()
 
@@ -98,7 +96,7 @@ const SingleGame = () => {
 
     const postNewReview = async () => {
         try {
-            console.log('new review', newReview)
+
             const response = await axios.post(`${BACKEND_API}/reviews/`, newReview, {
                 headers: {
                     'Authorization': 'Basic ' + btoa(`${AUTH_USER}:${AUTH_PASS}`),
@@ -106,7 +104,6 @@ const SingleGame = () => {
                 }
             });
 
-            console.log('Review submitted:', response.data);
             // clear the slate of the reviews so I can add another one immediately after if I want to
             setNewReview({
                 score: '',
@@ -120,13 +117,54 @@ const SingleGame = () => {
         }
     }
 
+    const [isUpdated, setIsUpdated] = useState(false)
+
+    const handleDeleteReview = async (review_id) => {
+        try {
+            const response = await axios.delete(`${BACKEND_API}/reviews/${review_id}`, {
+                headers: {
+                    'Authorization': 'Basic ' + btoa(`${AUTH_USER}:${AUTH_PASS}`),
+                    'Content-Type': 'application/json'
+                }
+            })
+            setIsUpdated(true)
+
+        } catch (error) {
+            console.log('error deleting a review', error)
+        }
+    }
+
+    //EDITING REVIEW MODAL
+    const [showEditModal, setShowEditModal] = useState(false)
+    const [editingReview, setEditingReview] = useState(null)
+
+    const handleEditReviewSubmission = async (reviewId, editData) => {
+        try {
+            const response = await axios.put(`${BACKEND_API}/reviews/${reviewId}`, {
+                headers: {
+                    'Authorization': 'Basic ' + btoa(`${AUTH_USER}:${AUTH_PASS}`),
+                    'Content-Type': 'application/json'
+                }
+            })
+        } catch (error) {
+
+        }
+    }
+
+
+    const handleShowEditReviewModal = () => {
+        setShowEditModal(!showEditModal)
+    }
+    
     // get the game
     useEffect(() => {
         getSingleGame()
+        
         if (newReview.review !== '') {
             postNewReview()
         }
-    }, [id, newReview])
+        setIsUpdated(false)
+    }, [id, newReview, isUpdated] )
 
     // get details about the reviews for the game
     useEffect(() => {
@@ -148,7 +186,18 @@ const SingleGame = () => {
         }
     }, [userId])
 
-    console.log('updated reviews for game', updatedReviewsForGame)
+    // useEffect(() => {
+    //     console.log('this useEffect has been triggered!')
+    //     const fetchData = async () => {
+    //         await getSingleGame();
+    //     };
+    
+    //     if (isUpdated) {
+    //         fetchData();
+    //         setIsUpdated(false); // Resetting isUpdated immediately after triggering the update
+    //     }
+    // }, [isUpdated]);
+
     return (
         <>
             <Navbar />
@@ -195,24 +244,41 @@ const SingleGame = () => {
 
                 {/* reviews for game */}
                 {updatedReviewsForGame && (
-                <Container className="dark-mode mt-4">
-                    <Row>
-                        <p>Reviews for this game (style me)</p>
-                        {updatedReviewsForGame.map((review, index) => (
-                            <Col key={index}>
-                                <Card className="dark-mode mb-3">
-                                    <Card.Body>
-                                        <Card.Title>Score: {review.score}</Card.Title>
-                                        <Card.Text>Review: {review.review}</Card.Text>
-                                        {/* need to find a way to get username for this userid on the review */}
-                                        <Card.Text>User: {review.user}</Card.Text>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                        ))}
-                    </Row>
-                </Container>
-            ) }
+                    <Container className="dark-mode mt-4">
+                        <Row>
+                            <p>Reviews for this game (style me)</p>
+                            {updatedReviewsForGame.map((review, index) => (
+                                <Col key={index}>
+                                    <Card className="dark-mode mb-3">
+                                        <Card.Body>
+                                            <Card.Title>Score: {review.score}</Card.Title>
+                                            <Card.Text>Review: {review.review}</Card.Text>
+                                            <Card.Text>User: {review.user}</Card.Text>
+                                        </Card.Body>
+                                        {/* CONDITIONALLY RENDER THIS PLEASE */}
+                                        <Card.Footer>
+                                            {isLoggedIn && review.user === userDetails.username && (
+                                                <>
+                                                    <Button onClick={() => handleDeleteReview(review.id)}>Delete Review</Button>
+                                                    {/* <Button onClick={() => handleShowEditReviewModal(review.id)}>Edit Review</Button>
+                                                    {showEditModal && (
+                                                        <EditReviewModal
+                                                            show={() => setShowEditModal(!showEditModal)}
+                                                            review_score={review.score}
+                                                            review_review={review.review}
+                                                        // update these props lol
+                                                        />
+                                                    )} */}
+                                                </>
+                                            )}
+                                        </Card.Footer>
+                                    </Card>
+                                </Col>
+                            ))}
+                        </Row>
+                    </Container>
+
+                )}
             </>
         </>
 
