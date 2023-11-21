@@ -1,13 +1,8 @@
-/* Dark Mode Styles */
+
 body {
   background-color: black;
   color: #fff;
 }
-
-/* nav {
-  background-color: #333;
-  color: white;
-} */
 
 /* Form styles */
 form {
@@ -54,14 +49,12 @@ button[type='submit']:hover {
 
 /* global styles for the cards */
 .card.dark-mode {
-  /* Your dark mode styles for the Card component */
   background-color: #333;
   color: #fff;
-  /* Add other dark mode styles as needed */
+
 }
 
 .card.dark-mode .card-title {
-  /* Example of styling a specific part of the Card component */
   margin-bottom: 10px;
-  color: #ffcc00; /* Example color change */
+  color: #ffcc00; 
 }

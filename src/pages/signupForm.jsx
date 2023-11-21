@@ -1,18 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Context } from '../context';
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import Navbar from "../components/navbar";
 import { Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+// import '../styles/global.css'
 import '../styles/dark-mode.css'
+
 
 const SignUpForm = () => {
     const { BACKEND_API } = useContext(Context);
     const navigate = useNavigate()
-    // const login = {
-    //     pathname: '/login'
-    // }
 
     const [formData, setFormData] = useState({
         username: '',

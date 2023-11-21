@@ -1,15 +1,53 @@
-/* Dark Mode Styles */
+
 body {
     background-color: black;
     color: #fff;
 }
 
+/* NAVBAR STYLING */
 nav {
     display: flex;
     justify-content: space-between;
+    align-items: center; 
     background-color: #333;
     color: white;
-}
+    padding: 2vmin 4vmin; 
+    height: 14vmin; 
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center; 
+  }
+  
+  .link-unstyled {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  h1 {
+    margin: 0; 
+  }
+  
+  .user-info,
+  .guest-buttons {
+    display: flex;
+    align-items: center; 
+  }
+  
+  .user-info p {
+    margin: 0; 
+    margin-right: 4vmin; 
+  }
+  
+  .nav-buttons {
+    display: flex;
+    align-items: center; 
+  }
+
+  
+
+
 
 /* Form styles */
 form {

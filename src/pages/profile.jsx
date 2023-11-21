@@ -12,7 +12,7 @@ const Profile = () => {
         if (userGames && userGames.length > 0) {
             return userGames.map((game, index) => (
                 <Col key={index} lg={4} md={6} sm={12}>
-                    <Link to={`/games/${game.id}`}>
+                    <Link to={`/games/${game.id}`} className="link-unstyled">
                         <Card className="dark-mode">
                             <Card.Body>
                                 <Card.Img src={game.cover_url} alt={game.title} />

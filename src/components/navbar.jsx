@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 import { Context } from '../context'
 import { useNavigate } from 'react-router-dom'
 
+import { Button } from 'react-bootstrap'
 
 const Navbar = () => {
     const { isLoggedIn, logout, userDetails, checkIfLoggedIn } = useContext(Context)
-
     const navigate = useNavigate()
 
     const handleLogout = () => {
@@ -14,30 +14,31 @@ const Navbar = () => {
         navigate('/')
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         checkIfLoggedIn()
-    },[])
+    }, [])
 
     return (
         <nav>
-            <div>
-            <Link to='/' className="link-unstyled"><h1>8bit reviews</h1></Link>
+            <div className='logo'>
+                <Link to='/' className="link-unstyled"><h1>8bit reviews</h1></Link>
             </div>
 
-            <div>
-                {isLoggedIn  ?
+            <div className='nav-buttons'>
+                {isLoggedIn ?
                     (
-                        <div>
+                        <div className='user-info'>
                             <p>Hi {userDetails.first_name}</p>
-                            <Link to='/register-game'><button>Register a Game</button></Link>
-                            <Link to='/profile'><button>My Profile</button></Link>
-                            <button onClick={handleLogout}>Logout</button>
-                        </div>)
-                    :
-                    (
-                        <div>
-                            <Link to='/sign-up'><button>Sign Up</button></Link>
-                            <Link to='/login'><button>Login</button></Link>
+                            <div className='user-buttons'>
+                                <Link to='/register-game'><Button className=''>Register a Game</Button></Link>
+                                <Link to='/profile'><Button className='mx-3'>My Profile</Button></Link>
+                                <Button onClick={handleLogout} className=''>Logout</Button>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className='guest-buttons'>
+                            <Link to='/sign-up'><Button>Sign Up</Button></Link>
+                            <Link to='/login'><Button>Login</Button></Link>
                         </div>
                     )
                 }

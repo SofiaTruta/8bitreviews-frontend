@@ -2,18 +2,15 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../context';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
 import Navbar from '../components/navbar';
 import { Form, Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { useCookies } from 'react-cookie'
-
-
 
 
 const RegisterGame = () => {
     const { userId, BACKEND_API, AUTH_PASS, AUTH_USER, getCSRFToken, csrfToken, isLoggedIn } = useContext(Context)
     const navigate = useNavigate();
-    const [cookies, setCookie, removeCookie] = useCookies(['accessToken'])
+    // const [cookies, setCookie, removeCookie] = useCookies(['accessToken'])
 
     const [formData, setFormData] = useState({
         title: '',

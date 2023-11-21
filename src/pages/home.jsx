@@ -24,8 +24,6 @@ function Home() {
             <Card.Img variant="top" src={game.cover_url} alt={game.title} />
               <Card.Body>
                 <Card.Title>{game.title}</Card.Title>
-                <Card.Text>Genre: {game.genre}</Card.Text>
-                <Card.Text>Genre: {game.genre}</Card.Text>
               </Card.Body>
             </Card>
           </Link>

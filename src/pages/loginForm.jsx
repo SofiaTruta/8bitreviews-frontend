@@ -3,7 +3,7 @@ import { Context } from '../context'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/navbar'
 import { Form, Button } from 'react-bootstrap'
-import 'bootstrap/dist/css/bootstrap.min.css'
+// import 'bootstrap/dist/css/bootstrap.min.css'
 // import '../styles/dark-mode.css'
 
 

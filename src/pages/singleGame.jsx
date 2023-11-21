@@ -1,15 +1,17 @@
 import { useContext, useEffect, useState } from 'react';
 import { Context } from '../context';
-import Navbar from "../components/navbar";
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Card, Container, Row, Col, Button } from 'react-bootstrap';
-import ReviewModal from '../components/ReviewModal.jsx'
 import { getCurrentDate } from '../utils/utils.js';
+
+import ReviewModal from '../components/ReviewModal.jsx'
 import EditReviewModal from '../components/EditReviewModal.jsx';
+import Navbar from "../components/navbar";
 import GameInfo from '../components/singleGame/gameInfo.jsx';
 import AddReviewBtn from '../components/singleGame/addReviewBtn.jsx';
+
 import { getSingleGame, findReviewUser, postNewReview, handleDeleteReview } from '../utils/singleGameFunctions.js';
+import { Card, Container, Row, Col, Button } from 'react-bootstrap';
 
 const SingleGame = () => {
     // VARIABLES
