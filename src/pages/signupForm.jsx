@@ -34,7 +34,6 @@ const SignUpForm = () => {
             alert("Passwords do not match!")
             return
         }
-
         const { confirmPassword, ...postData } = formData
 
         try {
@@ -42,13 +41,11 @@ const SignUpForm = () => {
             navigate('/login')
 
         } catch (error) {
+            alert("An error occurred while processing your request. Please make sure you have entered a valid username."); 
             console.log(error)
         }
     }
 
-    // useEffect(() => {
-    //     // toggleLogin()
-    // }, [user])
     return (
         <>
             <Navbar />

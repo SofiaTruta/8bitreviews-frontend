@@ -7,10 +7,14 @@ import { Card, Container, Row, Col, Button } from 'react-bootstrap';
 import ReviewModal from '../components/ReviewModal.jsx'
 import { getCurrentDate } from '../utils/utils.js';
 import EditReviewModal from '../components/EditReviewModal.jsx';
+import GameInfo from '../components/singleGame/gameInfo.jsx';
+import AddReviewBtn from '../components/singleGame/addReviewBtn.jsx';
+import { getSingleGame, findReviewUser, postNewReview, handleDeleteReview } from '../utils/singleGameFunctions.js';
 
 const SingleGame = () => {
+    // VARIABLES
     const { BACKEND_API, AUTH_PASS, AUTH_USER, isLoggedIn, userId, userDetails } = useContext(Context)
-
+    const now = getCurrentDate()
     const { id } = useParams()
     const [singleGame, setSingleGame] = useState(null)
     const [reviewsForGame, setReviewsForGame] = useState([
@@ -24,49 +28,6 @@ const SingleGame = () => {
         }
     ])
     const [updatedReviewsForGame, setUpdatedReviewsForGame] = useState(null)
-
-    const getSingleGame = async () => {
-        try {
-            const response = await axios.get(`${BACKEND_API}/games/${id}`, {
-                headers: {
-                    'Authorization': 'Basic ' + btoa(`${AUTH_USER}:${AUTH_PASS}`),
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            })
-
-            setSingleGame(response.data.game)
-            setReviewsForGame(response.data.reviews)
-
-        } catch (error) {
-            console.log('error getting single game', error)
-        }
-    }
-
-    const findReviewUser = async () => {
-        try {
-            const updatedReviews = await Promise.all(
-                reviewsForGame.map(async (review) => {
-                    const response = await axios.get(`${BACKEND_API}/rev-user/${review.user}`, {
-                        headers: {
-                            'Authorization': 'Basic ' + btoa(`${AUTH_USER}:${AUTH_PASS}`),
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                        }
-                    });
-
-                    //now for each response, take the response.data.username and set as the user of updatedReviewsForGame, and then copy all other keys apart from user from reviewsForGame
-                    const updatedReview = { ...review }
-                    updatedReview.user = response.data.username;
-
-                    return updatedReview;
-                })
-            );
-            setUpdatedReviewsForGame(updatedReviews)
-        } catch (error) {
-            console.log('Error fetching user details for reviews:', error);
-        }
-    }
-
-    // MODAL AND NEW REVIEW RELATED STUFF
     const [showReviewModal, setShowReviewModal] = useState(false);
     const [newReview, setNewReview] = useState({
         score: '',
@@ -75,13 +36,23 @@ const SingleGame = () => {
         game: id,
         date_submitted: ''
     })
+    const [isUpdated, setIsUpdated] = useState(false)
+    const [showEditModal, setShowEditModal] = useState(false)
+    // const [editingReview, setEditingReview] = useState({
+    //     score: '',
+    //     review: '',
+    //     user: userId,
+    //     game: id, 
+    //     date_submitted: ''
+    // })
 
+    // NEW REVIEW MODAL
     const handleShowReviewModal = () => {
         setShowReviewModal(!showReviewModal);
     };
 
     const handleReviewSubmission = (formData) => {
-        const now = getCurrentDate()
+        // const now = getCurrentDate()
 
         const updatedReview = {
             ...newReview,
@@ -94,82 +65,40 @@ const SingleGame = () => {
         setShowReviewModal(false);
     };
 
-    const postNewReview = async () => {
-        try {
-
-            const response = await axios.post(`${BACKEND_API}/reviews/`, newReview, {
-                headers: {
-                    'Authorization': 'Basic ' + btoa(`${AUTH_USER}:${AUTH_PASS}`),
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            // clear the slate of the reviews so I can add another one immediately after if I want to
-            setNewReview({
-                score: '',
-                review: '',
-                user: userId,
-                game: id,
-                date_submitted: ''
-            });
-        } catch (error) {
-            console.error('Error submitting review:', error);
-        }
-    }
-
-    const [isUpdated, setIsUpdated] = useState(false)
-
-    const handleDeleteReview = async (review_id) => {
-        try {
-            const response = await axios.delete(`${BACKEND_API}/reviews/${review_id}`, {
-                headers: {
-                    'Authorization': 'Basic ' + btoa(`${AUTH_USER}:${AUTH_PASS}`),
-                    'Content-Type': 'application/json'
-                }
-            })
-            setIsUpdated(true)
-
-        } catch (error) {
-            console.log('error deleting a review', error)
-        }
-    }
-
-    //EDITING REVIEW MODAL
-    const [showEditModal, setShowEditModal] = useState(false)
-    const [editingReview, setEditingReview] = useState(null)
-
+    //EDIT REVIEW MODAL
     const handleEditReviewSubmission = async (reviewId, editData) => {
         try {
-            const response = await axios.put(`${BACKEND_API}/reviews/${reviewId}`, {
+            const response = await axios.put(`${BACKEND_API}/reviews/${reviewId}/`, editData, {
                 headers: {
                     'Authorization': 'Basic ' + btoa(`${AUTH_USER}:${AUTH_PASS}`),
                     'Content-Type': 'application/json'
                 }
             })
+            setShowEditModal(false)
+            setIsUpdated(true)
         } catch (error) {
-
+            console.log('error editing the review', error)
         }
     }
-
 
     const handleShowEditReviewModal = () => {
         setShowEditModal(!showEditModal)
     }
-    
+
     // get the game
     useEffect(() => {
-        getSingleGame()
-        
+        getSingleGame(id, BACKEND_API, AUTH_USER, AUTH_PASS, setSingleGame, setReviewsForGame)
+
         if (newReview.review !== '') {
-            postNewReview()
+            postNewReview(newReview, BACKEND_API, AUTH_USER, AUTH_PASS, setNewReview, userId, id)
         }
         setIsUpdated(false)
-    }, [id, newReview, isUpdated] )
+    }, [id, newReview, isUpdated])
 
     // get details about the reviews for the game
     useEffect(() => {
         if (reviewsForGame.length > 0 && reviewsForGame.every(review => review.user !== '')) {
-            findReviewUser()
+            findReviewUser(reviewsForGame, BACKEND_API, AUTH_USER, AUTH_PASS, setUpdatedReviewsForGame)
         }
     }, [reviewsForGame])
 
@@ -186,50 +115,16 @@ const SingleGame = () => {
         }
     }, [userId])
 
-    // useEffect(() => {
-    //     console.log('this useEffect has been triggered!')
-    //     const fetchData = async () => {
-    //         await getSingleGame();
-    //     };
-    
-    //     if (isUpdated) {
-    //         fetchData();
-    //         setIsUpdated(false); // Resetting isUpdated immediately after triggering the update
-    //     }
-    // }, [isUpdated]);
 
     return (
         <>
             <Navbar />
             <>
-                {/* game info */}
-                <Container className=" dark-mode mt-4">
-                    {singleGame && (
-                        <Row>
-                            <Col>
-                                <h2>{singleGame.title}</h2>
-                                <Card className='dark-mode'>
-                                    <Card.Img variant="top" src={singleGame.cover_url} alt={singleGame.title} />
-                                    <Card.Body >
-                                        <Card.Text>Description: {singleGame.description}</Card.Text>
-                                        <Card.Text>Genre: {singleGame.genre}</Card.Text>
-                                        <Card.Text>Release Date: {singleGame.release_date}</Card.Text>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                        </Row>
-                    )}
-                </Container>
+                <GameInfo singleGame={singleGame} />
 
                 {/* if logged in, see button for adding a review */}
                 {isLoggedIn && (
-                    <Container className="dark-mode mt-4">
-                        <Row>
-                            <Col>
-                                <Button variant="primary" onClick={handleShowReviewModal}>Add a Review</Button>
-                            </Col>
-                        </Row>
-                    </Container>
+                    <AddReviewBtn show={handleShowReviewModal} />
                 )}
 
                 {/* add a review modal */}
@@ -241,8 +136,7 @@ const SingleGame = () => {
                     />
                 }
 
-
-                {/* reviews for game */}
+                {/* reviews for this game*/}
                 {updatedReviewsForGame && (
                     <Container className="dark-mode mt-4">
                         <Row>
@@ -255,20 +149,26 @@ const SingleGame = () => {
                                             <Card.Text>Review: {review.review}</Card.Text>
                                             <Card.Text>User: {review.user}</Card.Text>
                                         </Card.Body>
-                                        {/* CONDITIONALLY RENDER THIS PLEASE */}
+                                        {/* if logged in can delete or edit*/}
                                         <Card.Footer>
                                             {isLoggedIn && review.user === userDetails.username && (
                                                 <>
-                                                    <Button onClick={() => handleDeleteReview(review.id)}>Delete Review</Button>
-                                                    {/* <Button onClick={() => handleShowEditReviewModal(review.id)}>Edit Review</Button>
+                                                    <Button onClick={() => handleDeleteReview(review.id, BACKEND_API, AUTH_USER, AUTH_PASS, setIsUpdated)}>Delete Review</Button>
+
+                                                    <Button onClick={() => handleShowEditReviewModal(review.id)}>Edit Review</Button>
+
                                                     {showEditModal && (
                                                         <EditReviewModal
-                                                            show={() => setShowEditModal(!showEditModal)}
+                                                            show={handleShowEditReviewModal}
                                                             review_score={review.score}
                                                             review_review={review.review}
-                                                        // update these props lol
+                                                            reviewId={review.id}
+                                                            handleEditReviewSubmission={handleEditReviewSubmission}
+                                                            user={userId}
+                                                            game={id}
+                                                            date={now}
                                                         />
-                                                    )} */}
+                                                    )}
                                                 </>
                                             )}
                                         </Card.Footer>
