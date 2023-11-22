@@ -27,12 +27,12 @@ const Navbar = () => {
             </div>
 
             <div className='nav-buttons'>
-                {isLoggedIn ?
+                {isLoggedIn && userDetails ?
                     (
                         <div className='user-info'>
-                            <p>Hi {userDetails.first_name}</p>
+                            <p>Hi {userDetails.username}</p>
                             <div className='user-buttons'>
-                                <Link to='/register-game'><Button className=''>Register a Game</Button></Link>
+                                <Link to='/search-api'><Button className=''>Register a Game</Button></Link>
                                 <Link to='/profile'><Button className='mx-3'>My Profile</Button></Link>
                                 <Button onClick={handleLogout} className=''>Logout</Button>
                             </div>

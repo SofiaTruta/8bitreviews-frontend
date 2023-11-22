@@ -2,15 +2,20 @@ import { useEffect, useState, useContext } from 'react'
 import { Form, Button, Dropdown } from 'react-bootstrap'
 import { Context } from '../context';
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { useCookies } from 'react-cookie'
 
 const SearchAPI = () => {
-    const { userId, BACKEND_API, AUTH_PASS, AUTH_USER, getCSRFToken, csrfToken } = useContext(Context)
+    const { userId, BACKEND_API, AUTH_PASS, AUTH_USER, getCSRFToken, csrfToken, userDetails } = useContext(Context)
+
     const [searchTerm, setSearchTerm] = useState('')
     const [searchResult, setSearchResult] = useState(null)
     const [selectedItem, setSelectedItem] = useState(null)
     const [displayItem, setDisplayItem] = useState(null)
     const [chosenGame, setChosenGame] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
+    const navigate = useNavigate()
+    const [cookies] = useCookies(['user_id'])
 
     const handleSearch = async () => {
         try {
@@ -56,17 +61,21 @@ const SearchAPI = () => {
         }
     }
 
-    const chooseMe = () =>{
-        if (displayItem){
+    // console.log('cookie', cookies.user_id)
+
+    const chooseMe = () => {
+        if (displayItem) {
 
             const genreNames = displayItem.Genres.map(genre => genre.name)
+            // console.log('genreNames', genreNames)
 
             const chosenGame = {
                 name: displayItem.name,
                 description: displayItem.description,
-                releaseDate: displayItem.firstReleaseDate,
+                release_date: displayItem.firstReleaseDate,
                 genres: genreNames,
-                imageUrl: `http://img.opencritic.com/${displayItem.images.banner.og}`
+                image_url: `http://img.opencritic.com/${displayItem.images.banner.og}`,
+                user: cookies.user_id
             }
 
             console.log(chosenGame)
@@ -74,27 +83,27 @@ const SearchAPI = () => {
         }
     }
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    const handleSubmit = async () => {
         getCSRFToken()
-        console.log(displayItem)
-        // try {
-        //     const response = await axios.post(
-        //         `${BACKEND_API}/new-game/`,
-        //         formData,
-        //         {
-        //             headers: {
-        //                 'Authorization': 'Basic ' + btoa(`${AUTH_USER}:${AUTH_PASS}`),
-        //                 'Content-Type': 'application/x-www-form-urlencoded',
-        //                 'X-CSRFToken': csrfToken
-        //             }
-        //         })
-        //     console.log('new game', response)
-        //     navigate('/')
+        console.log('chosen Game', chosenGame)
+        const stringifiedChosenGame = JSON.stringify(chosenGame)
+        try {
+            const response = await axios.post(
+                `${BACKEND_API}/new-game/`,
+                stringifiedChosenGame,
+                {
+                    headers: {
+                        'Authorization': 'Basic ' + btoa(`${AUTH_USER}:${AUTH_PASS}`),
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    }
+                })
+            console.log('new game', response)
+            navigate('/')
 
-        // } catch (error) {
-        //     console.log(error);
-        // }
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     const handleChange = (event) => {
@@ -119,11 +128,17 @@ const SearchAPI = () => {
         }
     }, [selectedItem])
 
+    useEffect(() => {
+        if (chosenGame != null){
+            handleSubmit()
+        }
+    }, [chosenGame])
+
     return (
         <>
             <Form>
                 <Form.Group>
-                    <Form.Label>Search Term</Form.Label>
+                    <Form.Label>Our friends over at OpenCritic have a huge database of games - search for your game and I bet they'll help us find it:</Form.Label>
                     <Form.Control
                         type="text"
                         placeholder="Enter search term"

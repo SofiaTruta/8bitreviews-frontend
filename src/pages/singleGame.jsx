@@ -40,13 +40,6 @@ const SingleGame = () => {
     })
     const [isUpdated, setIsUpdated] = useState(false)
     const [showEditModal, setShowEditModal] = useState(false)
-    // const [editingReview, setEditingReview] = useState({
-    //     score: '',
-    //     review: '',
-    //     user: userId,
-    //     game: id, 
-    //     date_submitted: ''
-    // })
 
     // NEW REVIEW MODAL
     const handleShowReviewModal = () => {
