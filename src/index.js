@@ -10,6 +10,7 @@ import RegisterGame from './pages/registerGame.jsx';
 import SignUpForm from './pages/signupForm.jsx';
 import SingleGame from './pages/singleGame.jsx';
 import LoginForm from './pages/loginForm.jsx';
+import SearchAPI from './pages/searchAPI.jsx';
 
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="/sign-up" element={<SignUpForm />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/games/:id" element={<SingleGame />} />
+          <Route path="/search-api" element={<SearchAPI/>} />
         </Routes>
       </BrowserRouter>
     </ContextProvider>
