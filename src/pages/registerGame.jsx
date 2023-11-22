@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../context';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import AWS from 'aws-sdk';
 
 import Navbar from '../components/navbar';
 import { Form, Button } from 'react-bootstrap';
@@ -41,6 +42,7 @@ const RegisterGame = () => {
         }
     };
 
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
         getCSRFToken()
@@ -132,7 +134,7 @@ const RegisterGame = () => {
                             <Form.Label>Cover URL</Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Enter cover URL"
+                                placeholder="Enter cover art URL"
                                 name="cover_url"
                                 value={formData.cover_url}
                                 onChange={handleChange}
