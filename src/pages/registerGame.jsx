@@ -10,7 +10,6 @@ import { Form, Button } from 'react-bootstrap';
 const RegisterGame = () => {
     const { userId, BACKEND_API, AUTH_PASS, AUTH_USER, getCSRFToken, csrfToken, isLoggedIn } = useContext(Context)
     const navigate = useNavigate();
-    // const [cookies, setCookie, removeCookie] = useCookies(['accessToken'])
 
     const [formData, setFormData] = useState({
         title: '',

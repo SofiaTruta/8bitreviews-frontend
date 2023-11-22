@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { useCookies } from 'react-cookie'
 
 const SearchAPI = () => {
-    const { userId, BACKEND_API, AUTH_PASS, AUTH_USER, getCSRFToken, csrfToken, userDetails } = useContext(Context)
+    const { BACKEND_API, AUTH_PASS, AUTH_USER, getCSRFToken, csrfToken } = useContext(Context)
 
     const [searchTerm, setSearchTerm] = useState('')
     const [searchResult, setSearchResult] = useState(null)
@@ -61,7 +61,6 @@ const SearchAPI = () => {
         }
     }
 
-    // console.log('cookie', cookies.user_id)
 
     const chooseMe = () => {
         if (displayItem) {
@@ -125,13 +124,13 @@ const SearchAPI = () => {
     useEffect(() => {
         if (selectedItem != null) {
             fetchGame()
-        }
+        } // eslint-disable-next-line
     }, [selectedItem])
 
     useEffect(() => {
         if (chosenGame != null){
             handleSubmit()
-        }
+        } // eslint-disable-next-line
     }, [chosenGame])
 
     return (
