@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../context';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 
 import Navbar from '../components/navbar';
@@ -144,6 +144,9 @@ const RegisterGame = () => {
                             Register Game
                         </Button>
                     </Form>
+
+                    <h3>or</h3>
+                    <Link to='/search-api'><Button>Search in our database for a game</Button></Link>
                 </>
             ) : (
                 <div>Please log in to register a game</div>

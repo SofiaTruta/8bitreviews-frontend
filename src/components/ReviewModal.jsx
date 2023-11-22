@@ -9,9 +9,16 @@ const ReviewModal = ({ show, handleReviewSubmission }) => {
 
   const handleReviewFormChange = (event) => {
     const { name, value } = event.target;
+    let newValue = value;
+
+    if (name === 'score') {
+        // force it to be between 1-5
+        newValue = Math.min(Math.max(parseInt(value), 1), 5);
+    }
+
     setReviewFormData({
-      ...reviewFormData,
-      [name]: value
+        ...reviewFormData,
+        [name]: newValue
     });
   };
 
@@ -30,7 +37,7 @@ const ReviewModal = ({ show, handleReviewSubmission }) => {
         <Form.Label className="dark-mode">Score</Form.Label>
         <Form.Control
           type="number"
-          placeholder="Enter score"
+          placeholder="Enter score (1 - 5)"
           name="score"
           value={reviewFormData.score}
           onChange={handleReviewFormChange}

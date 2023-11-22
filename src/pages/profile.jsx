@@ -15,12 +15,9 @@ const Profile = () => {
                     <Link to={`/games/${game.id}`} className="link-unstyled">
                         <Card className="dark-mode">
                             <Card.Body>
-                                <Card.Img src={game.cover_url} alt={game.title} />
-                                <Card.Title>{game.title}</Card.Title>
-                                <Card.Text>Genre: {game.genre}</Card.Text>
-                                <Card.Text>Description: {game.description}</Card.Text>
-                                <Card.Text>Release Date: {game.release_date}</Card.Text>
-                                <Card.Text>Genre: {game.genre}</Card.Text>
+                                <Card.Img src={game.image_url} alt={game.name} />
+                                <Card.Title>{game.name}</Card.Title>
+                                <Card.Text>Genre: {game.genres && game.genres.join(', ')}</Card.Text>
                             </Card.Body>
                         </Card>
                         </Link >
@@ -57,7 +54,7 @@ return (
     <>
         <Navbar />
         <Container className="mt-4">
-            <h2 className="mb-4">My Games</h2>
+            <h2 className="mb-4">Games I suggested </h2>
             <Row>{renderGameCards()}</Row>
 
             <h2 className="mt-5 mb-4">My Reviews</h2>
