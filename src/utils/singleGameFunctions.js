@@ -45,7 +45,7 @@ export const findReviewUser = async (reviewsForGame, BACKEND_API, AUTH_USER, AUT
 
 export const postNewReview = async (newReview, BACKEND_API, AUTH_USER, AUTH_PASS, setNewReview, userId, id) => {
     try {
-
+// eslint-disable-next-line no-unused-vars
         const response = await axios.post(`${BACKEND_API}/reviews/`, newReview, {
             headers: {
                 'Authorization': 'Basic ' + btoa(`${AUTH_USER}:${AUTH_PASS}`),
@@ -67,7 +67,7 @@ export const postNewReview = async (newReview, BACKEND_API, AUTH_USER, AUTH_PASS
 }
 
 export const handleDeleteReview = async (review_id, BACKEND_API, AUTH_USER, AUTH_PASS, setIsUpdated) => {
-    try {
+    try { // eslint-disable-next-line no-unused-vars
         const response = await axios.delete(`${BACKEND_API}/reviews/${review_id}`, {
             headers: {
                 'Authorization': 'Basic ' + btoa(`${AUTH_USER}:${AUTH_PASS}`),

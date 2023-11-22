@@ -35,7 +35,7 @@ const SignUpForm = () => {
         }
         const { confirmPassword, ...postData } = formData
 
-        try {
+        try { // eslint-disable-next-line no-unused-vars
             const signup = await axios.post(`${BACKEND_API}/new-user/`, postData)
             navigate('/login')
 

@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../context';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import AWS from 'aws-sdk';
 
 import Navbar from '../components/navbar';
 import { Form, Button } from 'react-bootstrap';

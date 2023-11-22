@@ -69,7 +69,7 @@ const SingleGame = () => {
 
     //EDIT REVIEW MODAL
     const handleEditReviewSubmission = async (reviewId, editData) => {
-        try {
+        try { // eslint-disable-next-line no-unused-vars
             const response = await axios.put(`${BACKEND_API}/reviews/${reviewId}/`, editData, {
                 headers: {
                     'Authorization': 'Basic ' + btoa(`${AUTH_USER}:${AUTH_PASS}`),
@@ -94,14 +94,14 @@ const SingleGame = () => {
         if (newReview.review !== '') {
             postNewReview(newReview, BACKEND_API, AUTH_USER, AUTH_PASS, setNewReview, userId, id)
         }
-        setIsUpdated(false)
+        setIsUpdated(false) // eslint-disable-next-line
     }, [id, newReview, isUpdated])
 
     // get details about the reviews for the game
     useEffect(() => {
         if (reviewsForGame.length > 0 && reviewsForGame.every(review => review.user !== '')) {
             findReviewUser(reviewsForGame, BACKEND_API, AUTH_USER, AUTH_PASS, setUpdatedReviewsForGame)
-        }
+        } // eslint-disable-next-line
     }, [reviewsForGame])
 
     //handle a new review submission
@@ -114,7 +114,7 @@ const SingleGame = () => {
                 game: id,
                 date_submitted: ''
             });
-        }
+        } // eslint-disable-next-line
     }, [userId])
 
 

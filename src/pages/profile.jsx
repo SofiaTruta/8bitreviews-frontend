@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { Context } from '../context'
 import Navbar from "../components/navbar"
 import { Card, Container, Row, Col } from 'react-bootstrap'

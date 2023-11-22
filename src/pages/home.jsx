@@ -5,11 +5,12 @@ import { Card} from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 function Home() {
-  const { getGames, games, userId, isLoggedIn, checkIfLoggedIn } = useContext(Context)
+  const { getGames, games, checkIfLoggedIn } = useContext(Context)
 
   useEffect(() => {
     getGames()
     checkIfLoggedIn()
+    // eslint-disable-next-line
   }, []);
 
   return (

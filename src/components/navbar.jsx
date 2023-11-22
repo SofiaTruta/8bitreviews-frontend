@@ -14,9 +14,11 @@ const Navbar = () => {
         navigate('/')
     }
 
+    
     useEffect(() => {
         checkIfLoggedIn()
-    }, [])
+        // eslint-disable-next-line 
+    },[]) 
 
     return (
         <nav>
