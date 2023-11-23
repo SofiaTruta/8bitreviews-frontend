@@ -216,7 +216,7 @@ const SearchAPI = () => {
                         {displayItem && (
                             <>
                                 <img src={`https://img.opencritic.com/${displayItem.images.banner.og}`} alt='game cover' />
-                                <p>Name: {displayItem.name}</p>
+                                <p className='mt-4'>Name: {displayItem.name}</p>
                                 <p>Genre: {displayItem.Genres[0].name}</p>
                                 <p>Description: {displayItem.description}</p>
                                 <p>Release date: {displayItem.firstReleaseDate && new Date(displayItem.firstReleaseDate).toLocaleDateString()}</p>
@@ -226,13 +226,14 @@ const SearchAPI = () => {
                     <Modal.Footer className='dark-mode'>
                         <Button
                             variant="outline-secondary" className='retro-button mt-2'
-                            onClick={handleNoClick}>
-                            No
+                            style={{ borderColor: 'rgb(18, 222, 208)', color: 'rgb(18, 222, 208)' }}
+                            onClick={handleYesClick}>
+                            Yes
                         </Button>
                         <Button
                             variant="outline-secondary" className='retro-button mt-2'
-                            onClick={handleYesClick}>
-                            Yes
+                            onClick={handleNoClick}>
+                            No
                         </Button>
                     </Modal.Footer>
                 </Modal>

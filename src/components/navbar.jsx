@@ -33,14 +33,14 @@ const Navbar = () => {
                     (
                         <div className='user-info'>
                             <div className='user-buttons'>
-                                <Link to='/search-api'><Button variant="outline-secondary" className='retro-button'>Register a Game</Button></Link>
+                                <Link to='/search-api'><Button variant="outline-secondary" className='retro-button' style={{ borderColor: 'rgb(18, 222, 208)', color: 'rgb(18, 222, 208)' }}>Register a Game</Button></Link>
                                 <Link to='/profile'><Button variant="outline-secondary" className=' retro-button mx-3'>My Profile</Button></Link>
                                 <Button onClick={handleLogout} variant="outline-secondary" className='retro-button'>Logout</Button>
                             </div>
                         </div>
                     ) : (
                         <div className='guest-buttons'>
-                            <Link to='/login'><Button variant="outline-secondary" className='retro-button'>Login</Button></Link>
+                            <Link to='/login'><Button variant="outline-secondary" className='retro-button' style={{ borderColor: 'rgb(18, 222, 208)', color: 'rgb(18, 222, 208)' }}>Login</Button></Link>
                         </div>
                     )
                 }

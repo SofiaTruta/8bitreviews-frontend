@@ -99,7 +99,7 @@ form textarea.form-control::placeholder {
 }
 
 .card.dark-mode:hover {
-    box-shadow: 0 8px 16px rgba(255, 206, 86, 0.4); /* Change box shadow on hover */
+    box-shadow: 8px 8px 16px rgba(18, 222, 208, 0.4); /* Change box shadow on hover */
     transform: translateY(-2px) translateX(-2px); 
 }
 
@@ -118,7 +118,13 @@ form textarea.form-control::placeholder {
     color: inherit;
 }
 
-/* modal */
+/* ?SIGN UP BTN */
+.button.signup:hover {
+    color: rgb(18, 222, 208);
+}
+
+
+/*? MODALS */
 .modal.dark-mode {
     background-color: rgba(34, 34, 34, 0.5);
     color: #fff;
@@ -140,6 +146,10 @@ form textarea.form-control::placeholder {
     background-color: #333;
     color: #fff;
     border-top:#333;
+}
+
+.custom-modal-width .modal-dialog {
+    max-width: 50%; 
 }
 
 /*? LINK STYLING */

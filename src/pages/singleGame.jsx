@@ -157,7 +157,7 @@ const SingleGame = () => {
                         />
                     }
 
-                    <Row className="justify-content-center">
+                    <Row className="justify-content-center my-4">
                         <Col md={12}>
                             <h4 className="mb-3 d-flex justify-content-center">Reviews for this game</h4>
                             {updatedReviewsForGame && updatedReviewsForGame.length > 0 ? (

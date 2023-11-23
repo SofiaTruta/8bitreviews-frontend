@@ -20,11 +20,11 @@ const ContextProvider = ({ children }) => {
     const [userGames, setUserGames] = useState([
         {
             id: '',
-            title: '',
+            name: '',
             description: '',
             genre: '',
             release_date: '',
-            cover_url: '',
+            image_url: '',
             user: ''
         }
     ])
@@ -48,7 +48,7 @@ const ContextProvider = ({ children }) => {
     const AUTH_USER = process.env.REACT_APP_AUTH_USER
     const AUTH_PASS = process.env.REACT_APP_AUTH_PASS
 
-    // functions login, logout
+    // * functions login, logout
     async function getCSRFToken() {
         try {
             const response = await axios.get(`${BACKEND_API}/get-csrf-token/`, {
@@ -116,7 +116,7 @@ const ContextProvider = ({ children }) => {
         }
     }
 
-    // fetch data and populate
+    //* fetch data and populate
     async function getGames() {
         try {
             const response = await axios.get(`${BACKEND_API}/games`, {
@@ -134,7 +134,7 @@ const ContextProvider = ({ children }) => {
 
     
 
-    //CHECKS IF COOKIES ARE SET AND FETCHES DATA BASED ON THAT SPECIFIC USER
+    //*CHECKS IF COOKIES ARE SET AND FETCHES DATA BASED ON THAT SPECIFIC USER
     async function checkIfLoggedIn() {
         try {
             if (cookies.user_id) {
@@ -146,19 +146,19 @@ const ContextProvider = ({ children }) => {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     }
                 })
-                // console.log('check if logged in', response.data)
+                
                 setUserId(response.data.user.id)
                 setUserGames(response.data.games)
                 setUserDetails(response.data.user)
                 setUserReviews(response.data.reviews)
-                // console.log('userGames', userGames)
-                // console.log('userReviews', userReviews)
+            
             }
 
         } catch (error) {
             console.log('error getting user details', error)
         }
     }
+
 
 
     return (
@@ -176,6 +176,7 @@ const ContextProvider = ({ children }) => {
                 logout,
                 checkIfLoggedIn,
                 userReviews,
+                setUserReviews,
                 BACKEND_API, 
                 AUTH_PASS,
                 AUTH_USER, 

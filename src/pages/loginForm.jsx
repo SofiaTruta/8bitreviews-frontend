@@ -1,10 +1,8 @@
 import React, { useState, useContext } from 'react'
 import { Context } from '../context'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 import Navbar from '../components/navbar'
 import { Form, Button } from 'react-bootstrap'
-// import 'bootstrap/dist/css/bootstrap.min.css'
-// import '../styles/dark-mode.css'
 
 
 const LoginForm = () => {
@@ -25,41 +23,44 @@ const LoginForm = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         loginUser(formData.username, formData.password)
-        navigate('/')
+        navigate(-1)
     };
 
 
     return (
         <>
             <Navbar />
-            <div>Login Form</div>
-            <Form className="custom-dark-mode">
-                <Form.Group controlId="formUsername">
-                    <Form.Label>Username</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Enter username"
-                        name="username"
-                        value={formData.username}
-                        onChange={handleChange}
-                    />
-                </Form.Group>
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <div className="text-center" style={{ width: '40%' }}>
+                    <h3>Login Form</h3>
+                    <Form className="custom-dark-mode" onSubmit={handleSubmit}>
+                        <Form.Group controlId="formUsername">
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Enter username"
+                                name="username"
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
 
-                <Form.Group controlId="formPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        placeholder="Enter password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                    />
-                </Form.Group>
+                        <Form.Group controlId="formPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control
+                                type="password"
+                                placeholder="Enter password"
+                                name="password"
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
 
-                <Button variant="primary" type="submit" onClick={handleSubmit}>
-                    Login
-                </Button>
-            </Form>
+                        <Button variant="outline-secondary" type='submit' className='retro-button mt-2'
+                        style={{ borderColor: 'rgb(18, 222, 208)', color: 'rgb(18, 222, 208)'}} >
+                            Login
+                        </Button>
+                    </Form>
+                </div>
+            </div>
         </>
     );
 }

@@ -22,13 +22,13 @@ function Home() {
             <Col>
               <Card className="p-4 dark-mode welcome-card static">
                 <p className="welcome-text">
-                  From platform hoppers to farm simulator dwellers, all are welcome.
+                  From platform hoppers to farm simulator dwellers, all are welcome!
                 </p>
                 <p>
-                  Tell us what games you have been playing <br />
-                  Share your reviews on games <br />
+                  Tell us what games you have been playing. <br />
+                  Share your reviews on games. <br />
                 </p>
-                <Link to='/sign-up'><Button variant="outline-secondary retro-button mt-4">
+                <Link to='/sign-up'><Button variant="outline-secondary retro-button mt-4" style={{ borderColor: 'rgb(18, 222, 208)', color: 'rgb(18, 222, 208)' }}>
                   Sign Up<span className="tiny-text">to add games and leave reviews</span>
                 </Button></Link>
               </Card>
