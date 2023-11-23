@@ -5,8 +5,7 @@ import axios from 'axios';
 import Navbar from "../components/navbar";
 import { Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import '../styles/global.css'
-import '../styles/dark-mode.css'
+import '../styles/global.css'
 
 
 const SignUpForm = () => {
