@@ -141,7 +141,9 @@ const SingleGame = () => {
                     {isLoggedIn && (
                         <Row className="justify-content-center my-4">
                             <Col md={6} className='text-center'>
-                                <Button variant="outline-secondary" className='retro-button' onClick={handleShowReviewModal}>
+                                <Button variant="outline-secondary" className='retro-button' 
+                                onClick={handleShowReviewModal}
+                                style={{ borderColor: 'rgb(18, 222, 208)', color: 'rgb(18, 222, 208)'}}>
                                     Add a Review
                                 </Button>
                             </Col>

@@ -66,6 +66,7 @@ const ReviewModal = ({ show, handleReviewSubmission }) => {
         </Button>
         <Button 
         variant="outline-secondary" className='retro-button mx-2'
+        style={{ borderColor: 'rgb(18, 222, 208)', color: 'rgb(18, 222, 208)'}}
         onClick={handleSubmit}>
           Submit Review
         </Button>
