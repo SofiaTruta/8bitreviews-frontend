@@ -1,9 +1,10 @@
 import { useEffect, useState, useContext } from 'react'
-import { Form, Button, Dropdown } from 'react-bootstrap'
+import { Form, Button, Dropdown, Container, Row, Col, Modal } from 'react-bootstrap'
 import { Context } from '../context';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useCookies } from 'react-cookie'
+import Navbar from '../components/navbar';
 
 const SearchAPI = () => {
     const { BACKEND_API, AUTH_PASS, AUTH_USER, getCSRFToken, csrfToken } = useContext(Context)
@@ -19,7 +20,8 @@ const SearchAPI = () => {
     const navigate = useNavigate()
     const [cookies] = useCookies(['user_id'])
 
-    const handleSearch = async () => {
+    const handleSearch = async (event) => {
+        event.preventDefault()
         try {
             setIsLoading(true)
 
@@ -123,6 +125,15 @@ const SearchAPI = () => {
         setDisplayItem(null)
     }
 
+    const handleYesClick = () => {
+        chooseMe()
+        setDisplayItem(null);
+    };
+
+    const handleNoClick = () => {
+        handleClearSelection()
+    };
+
     useEffect(() => {
         if (selectedItem != null) {
             fetchGame()
@@ -130,57 +141,102 @@ const SearchAPI = () => {
     }, [selectedItem])
 
     useEffect(() => {
-        if (chosenGame != null){
+        if (chosenGame != null) {
             handleSubmit()
         } // eslint-disable-next-line
     }, [chosenGame])
 
     return (
         <>
-            <Form>
-                <Form.Group>
-                    <Form.Label>Our friends over at OpenCritic have a huge database of games - search for your game and I bet they'll help us find it:</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Enter search term"
-                        value={searchTerm}
-                        onChange={handleChange}
-                    />
-                </Form.Group>
-                <Button variant="primary" onClick={handleSearch} disabled={isLoading}>
-                    {isLoading ? 'Searching...' : 'Search'}
-                </Button>
-            </Form>
+            <Navbar />
 
-            {/* Display the search result */}
-            {searchResult && (
-                <Dropdown>
-                    <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                        Select an item
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        {searchResult.map(item => (
-                            <Dropdown.Item key={item.id} onClick={() => handleDropdownSelect(item.id)}>
-                                {item.name}
-                            </Dropdown.Item>
-                        ))}
-                    </Dropdown.Menu>
-                </Dropdown>
-            )}
+            <Container className="mt-5">
+                <Row className="mb-4 justify-content-center">
+                    <Col>
+                        <div className="p-4 d-flex justify-content-center flex-column">
+                            <p className="welcome-text">
+                                Our friends over at OpenCritic have a huge database of games
+                            </p>
+                            <p>
+                                search for your game and I bet they'll help us find it!
+                            </p>
+                        </div>
+                    </Col>
+                </Row>
 
-            {/* Display the selected item */}
-            {displayItem && (
-                <div>
-                    <h2>Is this the one? </h2>
-                    <img src={`https://img.opencritic.com/${displayItem.images.banner.og}`} alt='game cover' />
-                    <p>Name: {displayItem.name}</p>
-                    <p>Genre: {displayItem.Genres[0].name}</p>
-                    <p>Name: {displayItem.description}</p>
-                    <p>Release date: {displayItem.firstReleaseDate && new Date(displayItem.firstReleaseDate).toLocaleDateString()}</p>
-                    <Button onClick={chooseMe}>Yes</Button>
-                    <Button onClick={handleClearSelection}>No</Button>
+                <div className="d-flex justify-content-center">
+                    <Form className="d-flex flex-column align-items-center">
+                        <Form.Group className="text-center">
+                            <Form.Label>Search for a game:</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Enter search term"
+                                value={searchTerm}
+                                onChange={handleChange}
+                                style={{ width: '300px' }}
+                                className="text-center"
+                            />
+                        </Form.Group>
+                        <Button
+                            type='submit'
+                            variant="outline-secondary" className='retro-button mt-2'
+                            onClick={handleSearch}
+                            disabled={isLoading}
+                            style={{ width: '150px' }}
+                        >
+                            {isLoading ? 'Searching...' : 'Search'}
+                        </Button>
+                    </Form>
                 </div>
-            )}
+
+                {/* Display the search result */}
+                <div className="d-flex justify-content-center">
+                    {searchResult && (
+                        <Dropdown>
+                            <Dropdown.Toggle variant="outline-secondary" className='retro-button mt-2'>
+                                Select an item
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                {searchResult.map(item => (
+                                    <Dropdown.Item key={item.id} onClick={() => handleDropdownSelect(item.id)}>
+                                        {item.name}
+                                    </Dropdown.Item>
+                                ))}
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    )}
+                </div>
+
+
+                <Modal show={!!displayItem} onHide={handleClearSelection} className='dark-mode'>
+                    <Modal.Header closeButton className='dark-mode'>
+                        <Modal.Title>Is this the one?</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className='dark-mode'>
+                        {displayItem && (
+                            <>
+                                <img src={`https://img.opencritic.com/${displayItem.images.banner.og}`} alt='game cover' />
+                                <p>Name: {displayItem.name}</p>
+                                <p>Genre: {displayItem.Genres[0].name}</p>
+                                <p>Description: {displayItem.description}</p>
+                                <p>Release date: {displayItem.firstReleaseDate && new Date(displayItem.firstReleaseDate).toLocaleDateString()}</p>
+                            </>
+                        )}
+                    </Modal.Body>
+                    <Modal.Footer className='dark-mode'>
+                        <Button
+                            variant="outline-secondary" className='retro-button mt-2'
+                            onClick={handleNoClick}>
+                            No
+                        </Button>
+                        <Button
+                            variant="outline-secondary" className='retro-button mt-2'
+                            onClick={handleYesClick}>
+                            Yes
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            </Container>
         </>
 
     );
