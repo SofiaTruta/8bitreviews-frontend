@@ -18,7 +18,7 @@ const App = () => {
     <ContextProvider>
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/register-game" element={<RegisterGame />} />
           <Route path="/sign-up" element={<SignUpForm />} />

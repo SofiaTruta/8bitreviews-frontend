@@ -44,7 +44,7 @@ const RegisterGame = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         getCSRFToken()
-        try {
+        try { // eslint-disable-next-line no-unused-vars
             const response = await axios.post(
                 `${BACKEND_API}/new-game/`,
                 formData,
@@ -55,7 +55,6 @@ const RegisterGame = () => {
                         'X-CSRFToken': csrfToken
                     }
                 })
-            console.log('new game', response)
             navigate('/')
 
         } catch (error) {

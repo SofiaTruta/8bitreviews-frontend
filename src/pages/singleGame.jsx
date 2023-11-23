@@ -7,8 +7,6 @@ import { getCurrentDate } from '../utils/utils.js';
 import ReviewModal from '../components/ReviewModal.jsx'
 import EditReviewModal from '../components/EditReviewModal.jsx';
 import Navbar from "../components/navbar";
-import GameInfo from '../components/singleGame/gameInfo.jsx';
-import AddReviewBtn from '../components/singleGame/addReviewBtn.jsx';
 
 import { getSingleGame, findReviewUser, postNewReview, handleDeleteReview } from '../utils/singleGameFunctions.js';
 import { Card, Container, Row, Col, Button } from 'react-bootstrap';
@@ -47,7 +45,6 @@ const SingleGame = () => {
     };
 
     const handleReviewSubmission = (formData) => {
-        // const now = getCurrentDate()
 
         const updatedReview = {
             ...newReview,
@@ -115,67 +112,119 @@ const SingleGame = () => {
         <>
             <Navbar />
             <>
-                <GameInfo singleGame={singleGame} />
-
-                {/* if logged in, see button for adding a review */}
-                {isLoggedIn && (
-                    <AddReviewBtn show={handleShowReviewModal} />
-                )}
-
-                {/* add a review modal */}
-                {showReviewModal &&
-                    <ReviewModal
-                        show={handleShowReviewModal}
-                        handleClose={handleShowReviewModal}
-                        handleReviewSubmission={handleReviewSubmission}
-                    />
-                }
-
-                {/* reviews for this game*/}
-                {updatedReviewsForGame && (
-                    <Container className="dark-mode mt-4">
-                        <Row>
-                            <p>Reviews for this game (style me)</p>
-                            {updatedReviewsForGame.map((review, index) => (
-                                <Col key={index}>
-                                    <Card className="dark-mode mb-3">
-                                        <Card.Body>
-                                            <Card.Title>Score: {review.score}</Card.Title>
-                                            <Card.Text>Review: {review.review}</Card.Text>
-                                            <Card.Text>User: {review.user}</Card.Text>
-                                        </Card.Body>
-                                        {/* if logged in can delete or edit*/}
-                                        <Card.Footer>
-                                            {isLoggedIn && review.user === userDetails.username && (
-                                                <>
-                                                    <Button onClick={() => handleDeleteReview(review.id, BACKEND_API, AUTH_USER, AUTH_PASS, setIsUpdated)}>Delete Review</Button>
-
-                                                    <Button onClick={() => handleShowEditReviewModal(review.id)}>Edit Review</Button>
-
-                                                    {showEditModal && (
-                                                        <EditReviewModal
-                                                            show={handleShowEditReviewModal}
-                                                            review_score={review.score}
-                                                            review_review={review.review}
-                                                            reviewId={review.id}
-                                                            handleEditReviewSubmission={handleEditReviewSubmission}
-                                                            user={userId}
-                                                            game={id}
-                                                            date={now}
-                                                        />
-                                                    )}
-                                                </>
-                                            )}
-                                        </Card.Footer>
-                                    </Card>
-                                </Col>
-                            ))}
+                <Container className="dark-mode my-4">
+                    {singleGame && (
+                        <Row className="justify-content-center">
+                            <Col md={6}>
+                                <h2>{singleGame.name}</h2>
+                                <Card className="dark-mode static">
+                                    <Card.Img
+                                        variant="top"
+                                        src={singleGame.image_url}
+                                        alt={singleGame.title}
+                                        style={{ maxHeight: '300px', objectFit: 'cover' }}
+                                    />
+                                    <Card.Body>
+                                        <Card.Text>Genre: {singleGame.genres && singleGame.genres.join(', ')}</Card.Text>
+                                        <Card.Text>
+                                            Release Date: {new Date(singleGame.release_date).toLocaleDateString()}
+                                        </Card.Text>
+                                        <Card.Text>Description: {singleGame.description && singleGame.description
+                                            .split('. ')
+                                            .map((sentence, index) => <p key={index}>{sentence.trim()}.</p>)}</Card.Text>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
                         </Row>
-                    </Container>
+                    )}
 
-                )}
+                    {isLoggedIn && (
+                        <Row className="justify-content-center my-4">
+                            <Col md={6} className='text-center'>
+                                <Button variant="outline-secondary" className='retro-button' onClick={handleShowReviewModal}>
+                                    Add a Review
+                                </Button>
+                            </Col>
+                        </Row>
+                    )}
+
+                    {/* add a review modal */}
+                    {showReviewModal &&
+                        <ReviewModal
+                            show={handleShowReviewModal}
+                            handleClose={handleShowReviewModal}
+                            handleReviewSubmission={handleReviewSubmission}
+                        />
+                    }
+
+                    <Row className="justify-content-center my-4">
+                        <Col md={12}>
+                            <h4 className="mb-3 d-flex justify-content-center">Reviews for this game</h4>
+                            {updatedReviewsForGame && updatedReviewsForGame.length > 0 ? (
+                                updatedReviewsForGame.map((review, index) => (
+                                    <Col md={12} className='d-flex justify-content-center' key={index}>
+                                        <Card className="dark-mode mb-3 static">
+                                            <Card.Body>
+                                                <Card.Title>Score: {review.score}</Card.Title>
+                                                <Card.Text>Review: {review.review && review.review
+                                                    .split('. ')
+                                                    .map((sentence, index) => <p key={index}>{sentence.trim()}.</p>)}</Card.Text>
+                                                <Card.Text>User: {review.user}</Card.Text>
+                                            </Card.Body>
+                                            {/* if logged in can delete or edit*/}
+                                            <Card.Footer>
+                                                {isLoggedIn && review.user === userDetails.username && (
+                                                    <>
+                                                        <Button
+                                                            variant="outline-secondary" className='retro-button mx-2'
+                                                            onClick={() =>
+                                                                handleDeleteReview(
+                                                                    review.id,
+                                                                    BACKEND_API,
+                                                                    AUTH_USER,
+                                                                    AUTH_PASS,
+                                                                    setIsUpdated
+                                                                )
+                                                            }
+                                                        >
+                                                            Delete Review
+                                                        </Button>
+
+                                                        <Button
+                                                            variant="outline-secondary" className='retro-button mx-2'
+                                                            onClick={() => handleShowEditReviewModal(review.id)}>
+                                                            Edit Review
+                                                        </Button>
+
+                                                        {showEditModal && (
+                                                            <EditReviewModal
+                                                                show={handleShowEditReviewModal}
+                                                                review_score={review.score}
+                                                                review_review={review.review}
+                                                                reviewId={review.id}
+                                                                handleEditReviewSubmission={handleEditReviewSubmission}
+                                                                user={userId}
+                                                                game={id}
+                                                                date={now}
+                                                            />
+                                                        )}
+                                                    </>
+                                                )}
+                                            </Card.Footer>
+                                        </Card>
+                                    </Col>
+                                ))
+                            ) : (
+                                <div className="text-center">
+                                    <p>No reviews for this game. Be the first to leave one!</p>
+                                </div>
+                            )}
+                        </Col>
+                    </Row>
+                </Container>
             </>
         </>
+
 
     );
 }

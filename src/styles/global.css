@@ -16,17 +16,6 @@ nav {
     border-bottom: 2px solid grey;
 }
 
-
-/* h1 {
-    margin: 0;
-} */
-
-/* .user-info,
-.guest-buttons {
-    display: flex;
-    align-items: center;
-} */
-
 .user-info p {
     margin: 0;
     margin-right: 4vmin;
@@ -102,29 +91,26 @@ form textarea.form-control::placeholder {
     color: #888;
 }
 
-button[type='submit'] {
-    background-color: #007bff;
-    border-color: #007bff;
-    color: #fff;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-}
 
-button[type='submit']:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-}
-
-/* card styles */
+/*? card styles */
 .card.dark-mode {
-    background-color: #333;
+    background-color: rgb(31, 30, 30);
     color: #fff;
+}
+
+.card.dark-mode:hover {
+    box-shadow: 8px 8px 16px rgba(18, 222, 208, 0.4); /* Change box shadow on hover */
+    transform: translateY(-2px) translateX(-2px); 
+}
+
+.card.dark-mode.static:hover{
+    box-shadow: none;
+    transform: none;
 }
 
 .card.dark-mode .card-title {
     margin-bottom: 10px;
-    color: #ffcc00;
+    color: white;
 }
 
 .link-unstyled {
@@ -132,15 +118,23 @@ button[type='submit']:hover {
     color: inherit;
 }
 
-/* modal */
+/* ?SIGN UP BTN */
+.button.signup:hover {
+    color: rgb(18, 222, 208);
+}
+
+
+/*? MODALS */
 .modal.dark-mode {
     background-color: rgba(34, 34, 34, 0.5);
     color: #fff;
 }
 
+
 .modal-header.dark-mode {
     background-color: #333;
     color: #fff;
+    border-bottom: #333;
 }
 
 .modal-body.dark-mode {
@@ -151,10 +145,23 @@ button[type='submit']:hover {
 .modal-footer.dark-mode {
     background-color: #333;
     color: #fff;
+    border-top:#333;
+}
+
+.custom-modal-width .modal-dialog {
+    max-width: 50%; 
 }
 
 /*? LINK STYLING */
 .link-unstyled {
     text-decoration: none;
     color: inherit;
+}
+
+/* ? SEARCH GAME PAGE */
+
+.p-4 p {
+    display: block;
+    margin-bottom: 0.5rem;
+    text-align: center;
 }

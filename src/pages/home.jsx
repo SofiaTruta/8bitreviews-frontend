@@ -20,15 +20,15 @@ function Home() {
         {!isLoggedIn && (
           <Row className="mb-4">
             <Col>
-              <Card className="p-4 dark-mode welcome-card">
+              <Card className="p-4 dark-mode welcome-card static">
                 <p className="welcome-text">
-                  From platform hoppers to farm simulator dwellers, all are welcome.
+                  From platform hoppers to farm simulator dwellers, all are welcome!
                 </p>
                 <p>
-                  Tell us what games you have been playing <br />
-                  Share your reviews on games <br />
+                  Tell us what games you have been playing. <br />
+                  Share your reviews on games. <br />
                 </p>
-                <Link to='/sign-up'><Button variant="outline-secondary retro-button">
+                <Link to='/sign-up'><Button variant="outline-secondary retro-button mt-4" style={{ borderColor: 'rgb(18, 222, 208)', color: 'rgb(18, 222, 208)' }}>
                   Sign Up<span className="tiny-text">to add games and leave reviews</span>
                 </Button></Link>
               </Card>
@@ -38,11 +38,11 @@ function Home() {
 
         <Row className="mb-4">
           <Col>
-            <h2 className="text-center mb-4" style={{fontFamily:'Varela, sans-serif'}}>Games List</h2>
+            <h2 className="text-center mt-4 mb-2" style={{fontFamily:'Varela, sans-serif'}}>Games List</h2>
           </Col>
         </Row>
 
-        <Row xs={1} md={2} className="g-4">
+        <Row xs={1} md={3} className="g-4">
           {games && games.map((game) => (
             <Link to={`games/${game.id}`} key={game.id} className="link-unstyled">
               <Card className="dark-mode m-3">
