@@ -1,55 +1,65 @@
-
 body {
-    background-color: black;
-    color: #fff;
+    background-color: black !important;
+    color: #fff !important;
+    font-family: 'Varela', sans-serif !important; 
 }
 
-/* NAVBAR STYLING */
+/*? NAVBAR STYLING */
 nav {
     display: flex;
     justify-content: space-between;
-    align-items: center; 
-    background-color: #333;
+    align-items: center;
+    background-color: black;
     color: white;
-    padding: 2vmin 4vmin; 
-    height: 14vmin; 
-  }
-  
-  .logo {
+    padding: 2vmin 4vmin;
+    height: 14vmin;
+    border-bottom: 2px solid grey;
+}
+
+
+/* h1 {
+    margin: 0;
+} */
+
+/* .user-info,
+.guest-buttons {
     display: flex;
-    align-items: center; 
-  }
-  
-  .link-unstyled {
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  h1 {
-    margin: 0; 
-  }
-  
-  .user-info,
-  .guest-buttons {
+    align-items: center;
+} */
+
+.user-info p {
+    margin: 0;
+    margin-right: 4vmin;
+}
+
+.nav-buttons {
     display: flex;
-    align-items: center; 
+    align-items: center;
+}
+
+.retro-button {
+    text-transform: uppercase;
+}
+
+.welcome-card {
+    border: 1px solid #ddd; 
+    border-radius: 8px; 
   }
-  
-  .user-info p {
-    margin: 0; 
-    margin-right: 4vmin; 
+
+.welcome-text {
+    font-size: 1.3rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.tiny-text {
+    font-size: 0.8rem;
+    display: block;
+    margin-top: 5px;
+    text-transform: lowercase;
   }
-  
-  .nav-buttons {
-    display: flex;
-    align-items: center; 
-  }
 
-  
-
-
-
-/* Form styles */
+/*? Form styles */
 form {
     background-color: #222;
     padding: 20px;
@@ -85,7 +95,7 @@ form textarea.form-control {
     border-radius: 4px;
     padding: 8px;
     margin-bottom: 10px;
-    resize: vertical; 
+    resize: vertical;
 }
 
 form textarea.form-control::placeholder {
@@ -125,20 +135,26 @@ button[type='submit']:hover {
 /* modal */
 .modal.dark-mode {
     background-color: rgba(34, 34, 34, 0.5);
-    color: #fff; 
+    color: #fff;
 }
 
 .modal-header.dark-mode {
-    background-color: #333; 
-    color: #fff; 
+    background-color: #333;
+    color: #fff;
 }
 
 .modal-body.dark-mode {
     background-color: #222;
-    color: #fff; 
+    color: #fff;
 }
 
 .modal-footer.dark-mode {
-    background-color: #333; 
-    color: #fff; 
+    background-color: #333;
+    color: #fff;
+}
+
+/*? LINK STYLING */
+.link-unstyled {
+    text-decoration: none;
+    color: inherit;
 }

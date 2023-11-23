@@ -7,6 +7,8 @@ import { useCookies } from 'react-cookie'
 
 const SearchAPI = () => {
     const { BACKEND_API, AUTH_PASS, AUTH_USER, getCSRFToken, csrfToken } = useContext(Context)
+    const APIKey = process.env.REACT_APP_RAPIDAPI_KEY
+    const APIHost = process.env.REACT_APP_RAPIDAPI_HOST
 
     const [searchTerm, setSearchTerm] = useState('')
     const [searchResult, setSearchResult] = useState(null)
@@ -28,8 +30,8 @@ const SearchAPI = () => {
                     criteria: `${searchTerm}`
                 },
                 headers: {
-                    'X-RapidAPI-Key': '58e05d70admsh3fdb00d6b944093p1d0af9jsn5ca1648088f6',
-                    'X-RapidAPI-Host': 'opencritic-api.p.rapidapi.com'
+                    'X-RapidAPI-Key': APIKey,
+                    'X-RapidAPI-Host': APIHost
                 }
             }
             const response = await axios.request(option)
