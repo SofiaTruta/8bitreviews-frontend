@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react'
-import { Form, Button, Dropdown, Container, Row, Col, Modal } from 'react-bootstrap'
+import { Form, Button, Dropdown, Container, Row, Col, Modal, Spinner } from 'react-bootstrap'
 import { Context } from '../context';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
@@ -7,7 +7,7 @@ import { useCookies } from 'react-cookie'
 import Navbar from '../components/navbar';
 
 const SearchAPI = () => {
-    const { BACKEND_API, AUTH_PASS, AUTH_USER, getCSRFToken, csrfToken } = useContext(Context)
+    const { BACKEND_API, AUTH_PASS, AUTH_USER, getCSRFToken, csrfToken, loading, setLoading } = useContext(Context)
     const APIKey = process.env.REACT_APP_RAPIDAPI_KEY
     const APIHost = process.env.REACT_APP_RAPIDAPI_HOST
 
@@ -70,7 +70,6 @@ const SearchAPI = () => {
         if (displayItem) {
 
             const genreNames = displayItem.Genres.map(genre => genre.name)
-            // console.log('genreNames', genreNames)
 
             const chosenGame = {
                 name: displayItem.name,
@@ -81,16 +80,15 @@ const SearchAPI = () => {
                 user: cookies.user_id
             }
 
-            console.log(chosenGame)
             setChosenGame(chosenGame)
         }
     }
 
     const handleSubmit = async () => {
+        setLoading(true)
         getCSRFToken()
-        console.log('chosen Game', chosenGame)
         const stringifiedChosenGame = JSON.stringify(chosenGame)
-        try {
+        try { // eslint-disable-next-line no-unused-vars
             const response = await axios.post(
                 `${BACKEND_API}/new-game/`,
                 stringifiedChosenGame,
@@ -101,7 +99,7 @@ const SearchAPI = () => {
                         'X-CSRFToken': csrfToken
                     }
                 })
-            console.log('new game', response)
+            setLoading(false)
             navigate('/')
 
         } catch (error) {
@@ -151,6 +149,16 @@ const SearchAPI = () => {
             <Navbar />
 
             <Container className="mt-5">
+            {loading && (
+                        <Row>
+                            <Col className="text-center">
+                                <Spinner animation="border" role="status" className='justify-content-center'>
+                                    <span className="visually-hidden">Loading...</span>
+                                </Spinner>
+                            </Col>
+                        </Row>
+                    )}
+
                 <Row className="mb-4 justify-content-center">
                     <Col>
                         <div className="p-4 d-flex justify-content-center flex-column">
@@ -228,7 +236,7 @@ const SearchAPI = () => {
                             variant="outline-secondary" className='retro-button mt-2'
                             style={{ borderColor: 'rgb(18, 222, 208)', color: 'rgb(18, 222, 208)' }}
                             onClick={handleYesClick}>
-                            Yes
+                                Yes
                         </Button>
                         <Button
                             variant="outline-secondary" className='retro-button mt-2'

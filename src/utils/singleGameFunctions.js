@@ -1,6 +1,7 @@
 import axios from "axios"
 
-export const getSingleGame = async (id, BACKEND_API, AUTH_USER, AUTH_PASS, setSingleGame, setReviewsForGame) => {
+export const getSingleGame = async (id, BACKEND_API, AUTH_USER, AUTH_PASS, setSingleGame, setReviewsForGame, loading, setLoading) => {
+    setLoading(true)
     try {
         const response = await axios.get(`${BACKEND_API}/games/${id}`, {
             headers: {
@@ -11,7 +12,7 @@ export const getSingleGame = async (id, BACKEND_API, AUTH_USER, AUTH_PASS, setSi
 
         setSingleGame(response.data.game)
         setReviewsForGame(response.data.reviews)
-
+        setLoading(false)
     } catch (error) {
         console.log('error getting single game', error)
     }

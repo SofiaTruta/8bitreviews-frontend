@@ -1,11 +1,12 @@
 import { useContext, useEffect } from 'react';
 import Navbar from '../components/navbar';
 import { Context } from '../context';
-import { Card, Col, Row, Container, Button } from 'react-bootstrap'
+import { Card, Col, Row, Container, Button, Spinner } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 function Home() {
-  const { getGames, games, checkIfLoggedIn, isLoggedIn } = useContext(Context)
+  const { getGames, games, checkIfLoggedIn, isLoggedIn, loading } = useContext(Context)
+
 
   useEffect(() => {
     getGames()
@@ -17,6 +18,7 @@ function Home() {
     <>
       <Navbar />
       <Container className="mt-4 text-center">
+      
         {!isLoggedIn && (
           <Row className="mb-4">
             <Col>
@@ -42,18 +44,24 @@ function Home() {
           </Col>
         </Row>
 
-        <Row xs={1} md={3} className="g-4">
-          {games && games.map((game) => (
-            <Link to={`games/${game.id}`} key={game.id} className="link-unstyled">
-              <Card className="dark-mode m-3">
-                <Card.Img variant="top" src={game.image_url} alt={game.name} />
-                <Card.Body>
-                  <Card.Title>{game.name}</Card.Title>
-                </Card.Body>
-              </Card>
-            </Link>
-          ))}
-        </Row>
+        {loading ? ( 
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        ) : (
+          <Row xs={1} md={3} className="g-4">
+            {games && games.map((game) => (
+              <Link to={`games/${game.id}`} key={game.id} className="link-unstyled">
+                <Card className="dark-mode m-3">
+                  <Card.Img variant="top" src={game.image_url} alt={game.name} />
+                  <Card.Body>
+                    <Card.Title>{game.name}</Card.Title>
+                  </Card.Body>
+                </Card>
+              </Link>
+            ))}
+          </Row>
+        )}
       </Container>
     </>
   );

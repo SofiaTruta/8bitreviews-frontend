@@ -40,7 +40,7 @@ const ContextProvider = ({ children }) => {
     const [csrfToken, setCsrfToken] = useState(null)
     const [cookies, setCookie, removeCookie] = useCookies(['accessToken'])
 
-   
+    const [loading, setLoading] = useState(true)
 
     // other variables
     const BACKEND_API = process.env.REACT_APP_BACKEND_API;
@@ -118,6 +118,7 @@ const ContextProvider = ({ children }) => {
 
     //* fetch data and populate
     async function getGames() {
+        setLoading(true)
         try {
             const response = await axios.get(`${BACKEND_API}/games`, {
                 headers: {
@@ -126,7 +127,8 @@ const ContextProvider = ({ children }) => {
                 }
             });
 
-            setGames(response.data);
+            setGames(response.data)
+            setLoading(false)
         } catch (error) {
             console.log(error);
         }
@@ -182,7 +184,9 @@ const ContextProvider = ({ children }) => {
                 AUTH_USER, 
                 cookies,
                 getCSRFToken,
-                csrfToken
+                csrfToken,
+                loading,
+                setLoading
             }}>
             {children}
         </Context.Provider>

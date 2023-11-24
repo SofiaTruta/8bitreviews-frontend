@@ -9,11 +9,11 @@ import EditReviewModal from '../components/EditReviewModal.jsx';
 import Navbar from "../components/navbar";
 
 import { getSingleGame, findReviewUser, postNewReview, handleDeleteReview } from '../utils/singleGameFunctions.js';
-import { Card, Container, Row, Col, Button } from 'react-bootstrap';
+import { Card, Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 
 const SingleGame = () => {
     // VARIABLES
-    const { BACKEND_API, AUTH_PASS, AUTH_USER, isLoggedIn, userId, userDetails } = useContext(Context)
+    const { BACKEND_API, AUTH_PASS, AUTH_USER, isLoggedIn, userId, userDetails, loading, setLoading } = useContext(Context)
     const now = getCurrentDate()
     const { id } = useParams()
     const [singleGame, setSingleGame] = useState(null)
@@ -79,7 +79,7 @@ const SingleGame = () => {
 
     // get the game
     useEffect(() => {
-        getSingleGame(id, BACKEND_API, AUTH_USER, AUTH_PASS, setSingleGame, setReviewsForGame)
+        getSingleGame(id, BACKEND_API, AUTH_USER, AUTH_PASS, setSingleGame, setReviewsForGame, loading, setLoading)
 
         if (newReview.review !== '') {
             postNewReview(newReview, BACKEND_API, AUTH_USER, AUTH_PASS, setNewReview, userId, id)
@@ -113,37 +113,51 @@ const SingleGame = () => {
             <Navbar />
             <>
                 <Container className="dark-mode my-4">
-                    {singleGame && (
-                        <Row className="justify-content-center">
-                            <Col md={6}>
-                                <h2>{singleGame.name}</h2>
-                                <Card className="dark-mode static">
-                                    <Card.Img
-                                        variant="top"
-                                        src={singleGame.image_url}
-                                        alt={singleGame.title}
-                                        style={{ maxHeight: '300px', objectFit: 'cover' }}
-                                    />
-                                    <Card.Body>
-                                        <Card.Text>Genre: {singleGame.genres && singleGame.genres.join(', ')}</Card.Text>
-                                        <Card.Text>
-                                            Release Date: {new Date(singleGame.release_date).toLocaleDateString()}
-                                        </Card.Text>
-                                        <Card.Text>Description: {singleGame.description && singleGame.description
-                                            .split('. ')
-                                            .map((sentence, index) => <p key={index}>{sentence.trim()}.</p>)}</Card.Text>
-                                    </Card.Body>
-                                </Card>
+                    {loading ? (
+                        <Row>
+                            <Col className="text-center">
+                                <Spinner animation="border" role="status" className='justify-content-center'>
+                                    <span className="visually-hidden">Loading...</span>
+                                </Spinner>
                             </Col>
                         </Row>
-                    )}
+                    ) : (
+                        <>
+                            {singleGame && (
+                                <Row className="justify-content-center">
+                                    <Col md={6}>
+                                        <h2>{singleGame.name}</h2>
+                                        <Card className="dark-mode static">
+                                            <Card.Img
+                                                variant="top"
+                                                src={singleGame.image_url}
+                                                alt={singleGame.title}
+                                                style={{ maxHeight: '300px', objectFit: 'cover' }}
+                                            />
+                                            <Card.Body>
+                                                <Card.Text>Genre: {singleGame.genres && singleGame.genres.join(', ')}</Card.Text>
+                                                <Card.Text>
+                                                    Release Date: {new Date(singleGame.release_date).toLocaleDateString()}
+                                                </Card.Text>
+                                                <Card.Text>Description: {singleGame.description && singleGame.description
+                                                    .split('. ')
+                                                    .map((sentence, index) => <p key={index}>{sentence.trim()}.</p>)}</Card.Text>
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                </Row>
+                            )}
+                        </>
+                    )
+                    }
+
 
                     {isLoggedIn && (
                         <Row className="justify-content-center my-4">
                             <Col md={6} className='text-center'>
-                                <Button variant="outline-secondary" className='retro-button' 
-                                onClick={handleShowReviewModal}
-                                style={{ borderColor: 'rgb(18, 222, 208)', color: 'rgb(18, 222, 208)'}}>
+                                <Button variant="outline-secondary" className='retro-button'
+                                    onClick={handleShowReviewModal}
+                                    style={{ borderColor: 'rgb(18, 222, 208)', color: 'rgb(18, 222, 208)' }}>
                                     Add a Review
                                 </Button>
                             </Col>
