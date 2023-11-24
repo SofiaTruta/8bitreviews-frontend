@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Context } from '../context'
 import { useNavigate } from 'react-router-dom'
 
-import { Button } from 'react-bootstrap'
+import { Button  } from 'react-bootstrap'
 
 const Navbar = () => {
     const { isLoggedIn, logout, userDetails, checkIfLoggedIn } = useContext(Context)
@@ -23,7 +23,7 @@ const Navbar = () => {
     return (
         <nav>
             <div>
-                <Link to='/' className="link-unstyled" style={{ fontFamily: 'Silkscreen, sans-serif' }}>
+                <Link to='/' className="link-unstyled logo">
                     <h1>8bit reviews</h1>
                 </Link>
             </div>

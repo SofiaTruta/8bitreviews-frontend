@@ -1,7 +1,7 @@
 body {
     background-color: black !important;
     color: #fff !important;
-    font-family: 'Varela', sans-serif !important; 
+    font-family: 'Varela', sans-serif !important;
 }
 
 /*? NAVBAR STYLING */
@@ -30,10 +30,31 @@ nav {
     text-transform: uppercase;
 }
 
+.logo {
+    font-family: 'Silkscreen', sans-serif;
+}
+
+@media screen and (max-width: 786px) {
+    .retro-button {
+        text-transform: none;
+        padding: 0;
+    }
+
+    .user-buttons {
+        display: flex;
+        flex-wrap: no-wrap;
+        justify-content: center;
+    }
+
+    .logo {
+        font-size: 10px;
+    }
+}
+
 .welcome-card {
-    border: 1px solid #ddd; 
-    border-radius: 8px; 
-  }
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
 
 .welcome-text {
     font-size: 1.3rem;
@@ -46,7 +67,7 @@ nav {
     display: block;
     margin-top: 5px;
     text-transform: lowercase;
-  }
+}
 
 /*? Form styles */
 form {
@@ -99,11 +120,12 @@ form textarea.form-control::placeholder {
 }
 
 .card.dark-mode:hover {
-    box-shadow: 8px 8px 16px rgba(18, 222, 208, 0.4); /* Change box shadow on hover */
-    transform: translateY(-2px) translateX(-2px); 
+    box-shadow: 8px 8px 16px rgba(18, 222, 208, 0.4);
+    /* Change box shadow on hover */
+    transform: translateY(-2px) translateX(-2px);
 }
 
-.card.dark-mode.static:hover{
+.card.dark-mode.static:hover {
     box-shadow: none;
     transform: none;
 }
@@ -145,11 +167,11 @@ form textarea.form-control::placeholder {
 .modal-footer.dark-mode {
     background-color: #333;
     color: #fff;
-    border-top:#333;
+    border-top: #333;
 }
 
 .custom-modal-width .modal-dialog {
-    max-width: 50%; 
+    max-width: 50%;
 }
 
 /*? LINK STYLING */
